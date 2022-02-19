@@ -4,10 +4,13 @@ class User:
     db_name='users'
     def __init__( self , data ):
         self.id = data['id']
-        self.full_name = data['full_name']
+        self.first_name = data['first_name']
+        self.last_name = data['last_name']
+       # self.username = data['username']
+       # self.password = data['password']
         self.email = data['email']
-        self.created_at = data['CREATED_AT']
-        self.updated_at = data['UPDATED_AT']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
 
     @classmethod
     def get_all(cls):
@@ -21,8 +24,9 @@ class User:
         return users
 
     @classmethod
+    # might need to do some stuff to this to make it match the db
     def save(cls, data ):
-        query = "INSERT INTO users ( full_name , email, CREATED_AT, UPDATED_AT ) VALUES ( %(full_name)s, %(email)s, NOW(), NOW())"
+        query = "INSERT INTO users ( first_name , last_name, email, created_at, updated_at ) VALUES ( %(first_name)s, %(last_name)s, %(email)s, NOW(), NOW())"
         return connectToMySQL('users').query_db( query, data )
 
     @classmethod
