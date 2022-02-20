@@ -1,6 +1,7 @@
 from flask_app import app
 from flask_app.models import user
 from flask import render_template, redirect,  session, request
+from flask_bcrypt import Bcrypt
 
 @app.route('/')
 def index():
@@ -9,7 +10,20 @@ def index():
 @app.route('/dash')
 def dash():
     users = user.User.get_all()
-    print(users)
+   # print(users)
+    data = {
+        "email":request.form['email'],
+        "password":request.form['password'],
+        "id":id
+    }
+    user_in_database = user.User.get_by_email(data)
+    if user_in_database == False:
+        flash("User not recognized, please register above")
+        return redirect('/')
+    if not bcrypt.check_password_hash(user_in_database.password, request.form['password']):
+        flash("Invalid Email/Password", 'email')
+        return redirect('/')
+    session['user_id'] = user_in_database.id
     return render_template("Read(all).html", all_users = users)
 @app.route('/create')
 def index2():
