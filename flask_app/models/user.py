@@ -6,7 +6,7 @@ import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 class User:
-    db_name='users'
+    db_name='log_and_reg'
     def __init__( self , data ):
         self.id = data['id']
         self.first_name = data['first_name']
@@ -32,22 +32,22 @@ class User:
     # might need to do some stuff to this to make it match the db
     def save(cls, data ):
         query = "INSERT INTO users ( first_name , last_name, email, created_at, updated_at ) VALUES ( %(first_name)s, %(last_name)s, %(email)s, NOW(), NOW())"
-        return connectToMySQL('users').query_db( query, data )
+        return connectToMySQL('log_and_reg').query_db( query, data )
 
     @classmethod
     def delete(cls, data):
         query = "DELETE FROM users WHERE id=%(id)s"
-        return connectToMySQL('users').query_db(query, data)
+        return connectToMySQL('log_and_reg').query_db(query, data)
 
     @classmethod
     def update(cls,data):
         query = "UPDATE users SET full_name=%(full_name)s,email=%(email)s,updated_at=NOW() WHERE id = %(id)s;"
-        return connectToMySQL('users').query_db(query,data)
+        return connectToMySQL('log_and_reg').query_db(query,data)
 
     @classmethod
     def get_one(cls,data):
         query  = "SELECT * FROM users WHERE id = %(id)s";
-        result = connectToMySQL('users').query_db(query,data)
+        result = connectToMySQL('log_and_reg').query_db(query,data)
         return cls(result[0])
 
     @staticmethod

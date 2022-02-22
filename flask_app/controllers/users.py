@@ -11,6 +11,7 @@ def index():
 def dash():
     users = user.User.get_all()
    # print(users)
+   #15-26 need to be in a login method
     data = {
         "email":request.form['email'],
         "password":request.form['password'],
@@ -38,6 +39,10 @@ def makeuser():
         "password": request.form["password"],
         "email" : request.form["email"]
     }
+    if not bcrypt.check_password_hash(user_in_database.password, request.form['password']):
+        flash("Invalid Email/Password", 'email')
+        return redirect('/')
+    session['user_id'] = user_in_database.id
     user.User.save(data)
     return redirect('/dash')
 @app.route('/updateuser/<int:id>', methods=['POST'])
